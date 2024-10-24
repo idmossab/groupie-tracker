@@ -18,12 +18,7 @@
             <p>Members: {{range .Members}}{{.}}, {{end}}</p>
             <p>Creation Date: {{.CreationDate}}</p>
             <p>First Album: {{.FirstAlbum}}</p>
-            <h3>Location:</h3>
-            <ul>
-                {{range .locations.Location}}
-                <li>{{.}}</li>
-                {{end}}
-            </ul>
+            <p>Locations: {{.Locations}}</p>
             <p>Concert Dates: {{.ConcertDates}}</p>
             <p>Relations: {{.Relations}}</p>
         </li>
