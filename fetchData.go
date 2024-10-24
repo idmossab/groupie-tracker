@@ -1,9 +1,10 @@
 package main
 
-type User struct {
-    Name  string `json:"name"`
-    Email string `json:"email"`
-    Age   int    `json:"age"`
+type DataStruct struct {
+	Artists   []Artist
+	Locations []Location
+	Dates     []Date
+	Relations []Relation
 }
 
 type Artist struct {
@@ -13,9 +14,9 @@ type Artist struct {
 	Members      []string `json:"members"`
 	CreationDate int      `json:"creationDate"`
 	FirstAlbum   string   `json:"firstAlbum"`
-	Locations    string   `json:"locations"`
-	ConcertDates string   `json:"concertDates"`
-	Relations    string   `json:"relations"`
+	Locations    Location
+	ConcertDates Date
+	Relations    Relation
 }
 
 type Location struct {
@@ -30,6 +31,6 @@ type Date struct {
 }
 
 type Relation struct {
-	ID              int                            `json:"id"`
-	DatesLocations  map[string][]string            `json:"datesLocations"`
+	ID             int                 `json:"id"`
+	DatesLocations map[string][]string `json:"datesLocations"`
 }

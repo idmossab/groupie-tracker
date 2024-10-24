@@ -2,27 +2,42 @@ package main
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"net/http"
 )
 
-func fetchArtist(url string) Artist {
+func fetchArtist(url string) []Artist {
 	resp, err := http.Get(url)
+	var artists []Artist
+
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	/*body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
+	err = json.Unmarshal(body, &artist)*/
+	err = json.NewDecoder(resp.Body).Decode(&artists)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return artists
+}
 
-	var artist Artist
-	err = json.Unmarshal(body, &artist)
-	if err != nil {
+func fetchLocation(url string) []Location{
+	resp,err :=http.Get(url)
+	if err!=nil{
 		log.Fatal(err)
 	}
-	return artist
+	defer resp.Body.Close()
+
+	var locations []Location
+	err=json.NewDecoder(resp.Body).Decode(&locations)
+	if err!=nil{
+		log.Fatal(err)
+	}
+	return locations
 }
