@@ -19,7 +19,12 @@
                 <li>{{.}}</li> 
                 {{end}}
             </ul>
-            <p>Concert Dates: {{.ConcertDates}}</p>
+            <p>Concert Dates:</p>
+            <ul>
+                {{range .ConcertDates.Dates}}
+                <li>{{.}}</li> 
+                {{end}}
+            </ul>
             <p>Relations: {{.Relations}}</p>
         </li>
     </ul>

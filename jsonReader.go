@@ -48,7 +48,9 @@ func fetchData[T any](url string) T {
 
 func fetchArtistWithLocation(id string) Artist {
 	artist := fetchData[Artist](ArtistsURL + "/" + id)
-	locations := fetchData[Location](LocationsURL+"/"+id) 
+	locations := fetchData[Location](LocationsURL+"/"+id)
+	concertDates := fetchData[Date](DatesURL+"/"+id)  
 	artist.Locations = locations 
+	artist.ConcertDates=concertDates
 	return artist
 }

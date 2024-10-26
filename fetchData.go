@@ -1,12 +1,5 @@
 package main
 
-type DataStruct struct {
-	Artists   []Artist
-	Locations []Location
-	Dates     []Date
-	Relations []Relation
-}
-
 type Artist struct {
 	ID           int      `json:"id"`
 	Image        string   `json:"image"`
@@ -15,7 +8,7 @@ type Artist struct {
 	CreationDate int      `json:"creationDate"`
 	FirstAlbum   string   `json:"firstAlbum"`
 	Locations    any  
-	ConcertDates string   `json:"concertDates"`
+	ConcertDates any   
 	Relations    string   `json:"relations"`
 }
 
