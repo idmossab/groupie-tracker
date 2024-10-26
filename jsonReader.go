@@ -6,20 +6,28 @@ import (
 	"net/http"
 )
 
-func fetchArtist(url string) []Artist {
+func fetchArtist(url string, isSingle bool) interface{} {
 	resp, err := http.Get(url)
-	var artists []Artist
-
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
 
-	err = json.NewDecoder(resp.Body).Decode(&artists)
-	if err != nil {
-		log.Fatal(err)
+	if isSingle {
+		var artist Artist
+		err = json.NewDecoder(resp.Body).Decode(&artist)
+		if err != nil {
+			log.Print(err)
+		}
+		return artist
+	} else {
+		var artists []Artist
+		err = json.NewDecoder(resp.Body).Decode(&artists)
+		if err != nil {
+			log.Print(err)
+		}
+		return artists
 	}
-	return artists
 }
 
 

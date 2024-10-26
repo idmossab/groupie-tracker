@@ -7,7 +7,6 @@
 </head>
 <body>
     <ul>
-        {{range .}}
         <li>
             <p>Members: {{range .Members}}{{.}}, {{end}}</p>
             <p>Creation Date: {{.CreationDate}}</p>
@@ -16,7 +15,6 @@
             <p>Concert Dates: {{.ConcertDates}}</p>
             <p>Relations: {{.Relations}}</p>
         </li>
-        {{end}}
     </ul>
 </body>
 </html>
