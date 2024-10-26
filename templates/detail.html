@@ -13,7 +13,12 @@
             <p>Members: {{range .Members}}{{.}}, {{end}}</p>
             <p>Creation Date: {{.CreationDate}}</p>
             <p>First Album: {{.FirstAlbum}}</p>
-            <p>Locations: {{.Locations}}</p>
+            <p>Locations:</p>
+            <ul>
+                {{range .Locations.Locations}}
+                <li>{{.}}</li> 
+                {{end}}
+            </ul>
             <p>Concert Dates: {{.ConcertDates}}</p>
             <p>Relations: {{.Relations}}</p>
         </li>

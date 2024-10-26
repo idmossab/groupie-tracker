@@ -31,7 +31,7 @@ func getHandler(w http.ResponseWriter, r *http.Request) {
 func getDetail(w http.ResponseWriter, r *http.Request) {
 	id:=r.URL.Query().Get("id")
 	fmt.Println(r.URL.Query().Get("id"))
-	artist := fetchData[Artist](ArtistsURL + "/"+id)
+	artist := fetchArtistWithLocation(id) 
 	renderTemplate(w, "detail.html", &artist)
 }
 func renderTemplate(w http.ResponseWriter, page string, data any) {
