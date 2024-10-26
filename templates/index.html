@@ -14,13 +14,7 @@
         <li>
             <img src="{{.Image}}" alt="Artist Image" width="100" height="100">
             <h2>{{.Name}}</h2>
-            <p>ID: {{.ID}}</p>
-            <p>Members: {{range .Members}}{{.}}, {{end}}</p>
-            <p>Creation Date: {{.CreationDate}}</p>
-            <p>First Album: {{.FirstAlbum}}</p>
-            <p>Locations: {{.Locations}}</p>
-            <p>Concert Dates: {{.ConcertDates}}</p>
-            <p>Relations: {{.Relations}}</p>
+            <a href="/detail?id={{.ID}}">Details</a>
         </li>
         {{end}}
     </ul>

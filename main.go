@@ -1,34 +1,43 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
-	"log"
 	"net/http"
+)
+
+var (
+	temp         = template.Must(template.ParseGlob("./templates/*.html"))
+	ArtistsURL   = "https://groupietrackers.herokuapp.com/api/artists"
+	LocationsURL = "https://groupietrackers.herokuapp.com/api/locations"
+	DatesURL     = "https://groupietrackers.herokuapp.com/api/dates"
+	RelationURL  = "https://groupietrackers.herokuapp.com/api/relation"
 )
 
 func main() {
 
-	temp := template.Must(template.ParseFiles("index.html"))
 	// Fetch artist data
-	artistURL := "https://groupietrackers.herokuapp.com/api/artists"
-	locationURL:="https://groupietrackers.herokuapp.com/api/locations"
-	artists := fetchArtist(artistURL)
-	locations:=fetchLocation(locationURL)
 
-	for i := range artists {
-		for _, loc := range locations {
-			if artists[i].ID == loc.ID {
-				artists[i].Locations =loc
-				break
-			}
-		}
-	}
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		err:=temp.Execute(w, artists)
-		if err!=nil{
-			log.Fatal(err)
-		}
-	})
-
+	http.HandleFunc("/", getHandler)
+	http.HandleFunc("/detail", getDetail)
 	http.ListenAndServe(":8080", nil)
+}
+
+func getHandler(w http.ResponseWriter, r *http.Request) {
+	artists := fetchArtist(ArtistsURL)
+	renderTemplate(w,"index.html",artists)
+}
+
+func getDetail(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(r.URL.Query().Get("id"))
+	id:=r.URL.Query().Get("id")
+	artists := fetchArtist(ArtistsURL+"/"+id)
+	renderTemplate(w,"detail.html",artists)
+}
+func renderTemplate(w http.ResponseWriter,page string, data interface{}) {
+	err := temp.ExecuteTemplate(w, page, data)
+
+	if err != nil {
+		http.Error(w, "ERROR SERVER", http.StatusInternalServerError)
+	}
 }

@@ -22,6 +22,8 @@ func fetchArtist(url string) []Artist {
 	return artists
 }
 
+
+
 func fetchLocation(url string) []Location{
 	resp,err :=http.Get(url)
 	if err!=nil{
