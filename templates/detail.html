@@ -6,8 +6,10 @@
     <title>Document</title>
 </head>
 <body>
+    <img src="{{.Image}}">
     <ul>
         <li>
+            <p>Name: {{.Name}}</p>
             <p>Members: {{range .Members}}{{.}}, {{end}}</p>
             <p>Creation Date: {{.CreationDate}}</p>
             <p>First Album: {{.FirstAlbum}}</p>
