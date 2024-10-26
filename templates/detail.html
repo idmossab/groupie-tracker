@@ -25,7 +25,12 @@
                 <li>{{.}}</li> 
                 {{end}}
             </ul>
-            <p>Relations: {{.Relations}}</p>
+            <p>Relations:</p>
+            <ul>
+                {{range .Relations.DatesLocations}}
+                <li>{{.}}</li> 
+                {{end}}
+            </ul>
         </li>
     </ul>
 </body>
