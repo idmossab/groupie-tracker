@@ -24,15 +24,15 @@ func main() {
 }
 
 func getHandler(w http.ResponseWriter, r *http.Request) {
-	artists := fetchArtist(ArtistsURL,false)
+	artists := fetchData[[]Artist](ArtistsURL)
 	renderTemplate(w, "index.html", artists)
 }
 
 func getDetail(w http.ResponseWriter, r *http.Request) {
 	id:=r.URL.Query().Get("id")
 	fmt.Println(r.URL.Query().Get("id"))
-	artists := fetchArtist(ArtistsURL+"/"+id,true)
-	renderTemplate(w, "detail.html", artists)
+	artist := fetchData[Artist](ArtistsURL + "/"+id)
+	renderTemplate(w, "detail.html", artist)
 }
 func renderTemplate(w http.ResponseWriter, page string, data interface{}) {
 	err := temp.ExecuteTemplate(w, page, data)
