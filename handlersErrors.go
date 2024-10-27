@@ -17,7 +17,7 @@ func errorHandler(w http.ResponseWriter,status int){
 	case http.StatusInternalServerError:
 			fmt.Fprint(w,"Internal server error  (500)")
 	default:
-		fmt.Fprint(w,"Error %d",status)
+		fmt.Fprintf(w,"Error %d",status)
 	}
 }
 
