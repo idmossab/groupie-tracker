@@ -24,8 +24,8 @@ func getDetail(w http.ResponseWriter, r *http.Request) {
 			errorHandler(w, http.StatusBadRequest)
 			return
 		}
-		artist := fetchCompleteArtistData(id)
-		if artist.Name == "" {
+		artist,isEmty := fetchCompleteArtistData(id)
+		if isEmty{
 			errorHandler(w, http.StatusNotFound) // Artist not found or data is empty
 			return
 		}
