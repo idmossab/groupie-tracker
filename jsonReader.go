@@ -30,7 +30,7 @@ import (
 	}
 }*/
 
-func fetchData[T any](url string) T {
+func fetchData[T any](url string) (T,error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
@@ -42,14 +42,17 @@ func fetchData[T any](url string) T {
 	if err != nil {
 		log.Print(err)
 	}
-	return result
+	return result,nil
 }
 
 func fetchCompleteArtistData(id string) Artist {
-	artist := fetchData[Artist](ArtistsURL + "/" + id)
-	locations := fetchData[Location](LocationsURL + "/" + id)
-	concertDates := fetchData[Date](DatesURL + "/" + id)
-	relation := fetchData[Relation](RelationURL + "/" + id)
+	artist,err := fetchData[Artist](ArtistsURL + "/" + id)
+	if err != nil || artist.Name == "" { // Check for error or if artist is empty
+		return Artist{} // Return empty Artist if there's an error or artist data is empty
+	}
+	locations,_ := fetchData[Location](LocationsURL + "/" + id)
+	concertDates,_ := fetchData[Date](DatesURL + "/" + id)
+	relation,_ := fetchData[Relation](RelationURL + "/" + id)
 	artist.Locations = locations
 	artist.ConcertDates = concertDates
 	artist.Relations = relation

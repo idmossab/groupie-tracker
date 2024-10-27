@@ -7,7 +7,7 @@ func getHandler(w http.ResponseWriter, r *http.Request) {
 		errorHandler(w, http.StatusMethodNotAllowed)
 	}
 	if r.URL.Path == "/" {
-		artists := fetchData[[]Artist](ArtistsURL)
+		artists,_ := fetchData[[]Artist](ArtistsURL)
 		renderTemplate(w, "index.html", &artists)
 	} else {
 		errorHandler(w, http.StatusNotFound)
@@ -25,6 +25,10 @@ func getDetail(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		artist := fetchCompleteArtistData(id)
+		if artist.Name == "" {
+			errorHandler(w, http.StatusNotFound) // Artist not found or data is empty
+			return
+		}
 		renderTemplate(w, "detail.html", &artist)
 	} else {
 		errorHandler(w, http.StatusNotFound)
