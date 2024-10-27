@@ -20,24 +20,16 @@ func main() {
 
 	http.HandleFunc("/", getHandler)
 	http.HandleFunc("/detail", getDetail)
+
+	fmt.Println("Server starting... on http://localhost:8080")
 	http.ListenAndServe(":8080", nil)
 }
 
-func getHandler(w http.ResponseWriter, r *http.Request) {
-	artists := fetchData[[]Artist](ArtistsURL)
-	renderTemplate(w, "index.html", &artists)
-}
 
-func getDetail(w http.ResponseWriter, r *http.Request) {
-	id:=r.URL.Query().Get("id")
-	fmt.Println(r.URL.Query().Get("id"))
-	artist := fetchArtistWithLocation(id) 
-	renderTemplate(w, "detail.html", &artist)
-}
 func renderTemplate(w http.ResponseWriter, page string, data any) {
 	err := temp.ExecuteTemplate(w, page, data)
 
 	if err != nil {
-		http.Error(w, "ERROR SERVER", http.StatusInternalServerError)
+		errorHandler(w,http.StatusInternalServerError)
 	}
 }

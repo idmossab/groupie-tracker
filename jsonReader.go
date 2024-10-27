@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func fetchArtist(url string, isSingle bool) interface{} {
+/*func fetchArtist(url string, isSingle bool) interface{} {
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
@@ -28,7 +28,7 @@ func fetchArtist(url string, isSingle bool) interface{} {
 		}
 		return artists
 	}
-}
+}*/
 
 func fetchData[T any](url string) T {
 	resp, err := http.Get(url)
@@ -45,14 +45,13 @@ func fetchData[T any](url string) T {
 	return result
 }
 
-
-func fetchArtistWithLocation(id string) Artist {
+func fetchCompleteArtistData(id string) Artist {
 	artist := fetchData[Artist](ArtistsURL + "/" + id)
-	locations := fetchData[Location](LocationsURL+"/"+id)
-	concertDates := fetchData[Date](DatesURL+"/"+id) 
-	relation := fetchData[Relation](RelationURL+"/"+id)   
-	artist.Locations = locations 
-	artist.ConcertDates=concertDates
-	artist.Relations = relation 
+	locations := fetchData[Location](LocationsURL + "/" + id)
+	concertDates := fetchData[Date](DatesURL + "/" + id)
+	relation := fetchData[Relation](RelationURL + "/" + id)
+	artist.Locations = locations
+	artist.ConcertDates = concertDates
+	artist.Relations = relation
 	return artist
 }
