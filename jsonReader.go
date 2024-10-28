@@ -30,6 +30,7 @@ import (
 	}
 }*/
 
+// Fetches and decodes JSON data from the URL.
 func fetchData[T any](url string) (T,error) {
 	resp, err := http.Get(url)
 	if err != nil {
@@ -45,6 +46,7 @@ func fetchData[T any](url string) (T,error) {
 	return result,nil
 }
 
+// Fetches complete artist data including locations, dates, and relations.
 func fetchCompleteArtistData(id string) (Artist,bool) {
 	artist,err := fetchData[Artist](ArtistsURL + "/" + id)
 	// Check for error or if artist is empty

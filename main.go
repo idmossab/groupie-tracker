@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+//declaration Variable
 var (
 	temp         = template.Must(template.ParseGlob("./templates/*.html"))
 	ArtistsURL   = "https://groupietrackers.herokuapp.com/api/artists"
@@ -16,8 +17,6 @@ var (
 
 func main() {
 
-	// Fetch artist data
-
 	http.HandleFunc("/", getHandler)
 	http.HandleFunc("/detail", getDetail)
 
@@ -25,10 +24,9 @@ func main() {
 	http.ListenAndServe(":8080", nil)
 }
 
-
+// Renders the template with the given data
 func renderTemplate(w http.ResponseWriter, page string, data any) {
 	err := temp.ExecuteTemplate(w, page, data)
-
 	if err != nil {
 		errorHandler(w,http.StatusInternalServerError)
 	}

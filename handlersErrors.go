@@ -5,6 +5,7 @@ import(
 	"net/http"
 )
 
+// Handles HTTP errors by sending the appropriate status code and message.
 func errorHandler(w http.ResponseWriter,status int){
 	w.WriteHeader(status) // Sends the HTTP status code (e.g., 200 for success, 404 for not found) to the client before writing the response body
 	switch status{
