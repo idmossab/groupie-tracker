@@ -31,3 +31,4 @@ func renderTemplate(w http.ResponseWriter, page string, data any) {
 		errorHandler(w,http.StatusInternalServerError)
 	}
 }
+

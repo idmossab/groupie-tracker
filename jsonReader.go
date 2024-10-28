@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"fmt"
 )
 
 /*func fetchArtist(url string, isSingle bool) interface{} {
@@ -37,11 +38,14 @@ func fetchData[T any](url string) (T,error) {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
-
+	if resp.StatusCode != http.StatusOK {
+		return *new(T), fmt.Errorf("error: received status code %d", resp.StatusCode)
+	}
 	var result T
 	err = json.NewDecoder(resp.Body).Decode(&result)
 	if err != nil {
 		log.Print(err)
+		return *new(T), err
 	}
 	return result,nil
 }
