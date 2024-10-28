@@ -35,7 +35,7 @@ import (
 func fetchData[T any](url string) (T,error) {
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {

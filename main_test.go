@@ -54,6 +54,7 @@ func TestFetchData_FailedRequest(t *testing.T) {
 
 // Additional tests for fetching locations, concert dates, and relations can be added similarly
 
+// Test the error handler for different status codes
 func TestErrorHandler(t *testing.T) {
 	// Create a response recorder to capture the response
 	rec := httptest.NewRecorder()
@@ -73,53 +74,55 @@ func TestErrorHandler(t *testing.T) {
 	}
 }
 
+// Test the main getHandler function
 func TestGetHandler(t *testing.T) {
-	req := httptest.NewRequest(http.MethodGet, "/", nil)
-	w := httptest.NewRecorder()
+	req := httptest.NewRequest(http.MethodGet, "/", nil) // Create a new GET request
+	w := httptest.NewRecorder() // Create a response recorder
 
-	getHandler(w, req)
+	getHandler(w, req) // Call the getHandler function
 
-	res := w.Result()
+	res := w.Result() // Get the result
 	if res.StatusCode != http.StatusOK {
 		t.Errorf("expected status OK; got %v", res.Status)
 	}
 }
 
-// اختبر getDetail
+// Test the getDetail function
 func TestGetDetail(t *testing.T) {
-	// إعداد الطلب الوهمي مع معرّف الفنان
+	// Set up the request with artist ID
 	req := httptest.NewRequest(http.MethodGet, "/detail?id=1", nil)
 	w := httptest.NewRecorder()
 
-	getDetail(w, req)
+	getDetail(w, req) // Call the getDetail function
 
-	res := w.Result()
+	res := w.Result() // Get the result
 	if res.StatusCode != http.StatusOK {
 		t.Errorf("expected status OK; got %v", res.Status)
 	}
 }
 
+// Test getDetail with an empty ID
 func TestGetDetail_EmptyID(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/detail?id=", nil)
 	w := httptest.NewRecorder()
 
-	getDetail(w, req)
+	getDetail(w, req) // Call the getDetail function
 
-	res := w.Result()
+	res := w.Result() // Get the result
 	if res.StatusCode != http.StatusBadRequest {
 		t.Errorf("expected status Bad Request; got %v", res.Status)
 	}
 }
 
-// اختبار الحالة عند عدم وجود الفنان
+// Test the case when the artist is not found
 func TestGetDetail_ArtistNotFound(t *testing.T) {
-	// هنا تحتاج إلى إعداد fetchCompleteArtistData ليعيد أن الفنان غير موجود
+	// Here, you need to set up fetchCompleteArtistData to return not found for the artist
 	req := httptest.NewRequest(http.MethodGet, "/detail?id=999", nil)
 	w := httptest.NewRecorder()
 
-	getDetail(w, req)
+	getDetail(w, req) // Call the getDetail function
 
-	res := w.Result()
+	res := w.Result() // Get the result
 	if res.StatusCode != http.StatusNotFound {
 		t.Errorf("expected status Not Found; got %v", res.Status)
 	}
@@ -128,12 +131,12 @@ func TestGetDetail_ArtistNotFound(t *testing.T) {
 // Mocking a valid template for successful test
 var validTemplate = template.Must(template.New("valid").Parse(`{{.Title}}: {{.Body}}`))
 
-// Test function for renderTemplate
+// Test function for rendering the template
 func TestRenderTemplate(t *testing.T) {
 	// Create a response recorder
 	recorder := httptest.NewRecorder()
 
-	// Create a sample data to pass to the template
+	// Create sample data to pass to the template
 	data := map[string]string{
 		"Title": "Test Title",
 		"Body":  "This is a test body.",
@@ -157,7 +160,7 @@ func TestRenderTemplate(t *testing.T) {
 	}
 }
 
-// Test function for renderTemplate with error handling
+// Test function for rendering the template with error handling
 func TestRenderTemplate_Error(t *testing.T) {
 	// Create a response recorder
 	recorder := httptest.NewRecorder()
@@ -169,5 +172,5 @@ func TestRenderTemplate_Error(t *testing.T) {
 	}
 
 	// We don't check the status code here as it won't be set in this context
-	// since we are not invoking renderTemplate directly, we just need to validate the error.
+	// since we are not invoking renderTemplate directly; we just need to validate the error.
 }
