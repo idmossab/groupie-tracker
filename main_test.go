@@ -8,73 +8,7 @@ import (
 	"text/template"
 )
 
-// Mock artist data for testing
-func TestFetchData_Success(t *testing.T) {
-	// Create a new HTTP server to mock the response
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		artist := Artist{
-			ID:           1,
-			Image:        "test_image.png",
-			Name:         "Test Artist",
-			Members:      []string{"Member1", "Member2"},
-			CreationDate: 2020,
-			FirstAlbum:   "First Album",
-		}
-		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(artist) // Encode the mock artist data
-	}))
-	defer ts.Close() // Ensure the server is closed after the test
-
-	// Call the fetchData function with the mock server URL
-	result, err := fetchData[Artist](ts.URL)
-	if err != nil {
-		t.Fatalf("expected no error, got %v", err)
-	}
-
-	// Check the result
-	if result.Name != "Test Artist" {
-		t.Errorf("expected Test Artist, got %s", result.Name)
-	}
-}
-
-// Test fetchData for failure case
-func TestFetchData_FailedRequest(t *testing.T) {
-	// Create a new HTTP server to mock a failed response
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusInternalServerError) // Simulate an error response
-	}))
-	defer ts.Close() // Ensure the server is closed after the test
-
-	// Call the fetchData function with the mock server URL
-	_, err := fetchData[Artist](ts.URL)
-	if err == nil {
-		t.Fatal("expected an error, got none")
-	}
-}
-
-// Additional tests for fetching locations, concert dates, and relations can be added similarly
-
-// Test the error handler for different status codes
-func TestErrorHandler(t *testing.T) {
-	// Create a response recorder to capture the response
-	rec := httptest.NewRecorder()
-
-	// Call the errorHandler with a specific status
-	errorHandler(rec, http.StatusNotFound)
-
-	// Check the response code
-	if rec.Code != http.StatusNotFound {
-		t.Errorf("expected status %d, got %d", http.StatusNotFound, rec.Code)
-	}
-
-	// Check the response body
-	expected := "Page not found (404)"
-	if rec.Body.String() != expected {
-		t.Errorf("expected body %q, got %q", expected, rec.Body.String())
-	}
-}
-
-// Test the main getHandler function
+// --------------------------------- Test the main getHandler function ---------------------------------------
 func TestGetHandler(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/", nil) // Create a new GET request
 	w := httptest.NewRecorder() // Create a response recorder
@@ -87,7 +21,7 @@ func TestGetHandler(t *testing.T) {
 	}
 }
 
-// Test the getDetail function
+// --------------------------------- Test the getDetail function ---------------------------------
 func TestGetDetail(t *testing.T) {
 	// Set up the request with artist ID
 	req := httptest.NewRequest(http.MethodGet, "/detail?id=1", nil)
@@ -128,7 +62,28 @@ func TestGetDetail_ArtistNotFound(t *testing.T) {
 	}
 }
 
-// Mocking a valid template for successful test
+// --------------------------------- Test the error handler for different status codes ---------------------------------
+func TestErrorHandler(t *testing.T) {
+	// Create a response recorder to capture the response
+	rec := httptest.NewRecorder()
+
+	// Call the errorHandler with a specific status
+	errorHandler(rec, http.StatusNotFound)
+
+	// Check the response code
+	if rec.Code != http.StatusNotFound {
+		t.Errorf("expected status %d, got %d", http.StatusNotFound, rec.Code)
+	}
+
+	// Check the response body
+	expected := "Page not found (404)"
+	if rec.Body.String() != expected {
+		t.Errorf("expected body %q, got %q", expected, rec.Body.String())
+	}
+}
+
+
+// --------------------------------- Mocking a valid template for successful test ---------------------------------
 var validTemplate = template.Must(template.New("valid").Parse(`{{.Title}}: {{.Body}}`))
 
 // Test function for rendering the template
@@ -174,3 +129,49 @@ func TestRenderTemplate_Error(t *testing.T) {
 	// We don't check the status code here as it won't be set in this context
 	// since we are not invoking renderTemplate directly; we just need to validate the error.
 }
+
+
+// --------------------------------- Mock artist data for testing ---------------------------------
+func TestFetchData_Success(t *testing.T) {
+	// Create a new HTTP server to mock the response
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		artist := Artist{
+			ID:           1,
+			Image:        "test_image.png",
+			Name:         "Test Artist",
+			Members:      []string{"Member1", "Member2"},
+			CreationDate: 2020,
+			FirstAlbum:   "First Album",
+		}
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(artist) // Encode the mock artist data
+	}))
+	defer ts.Close() // Ensure the server is closed after the test
+
+	// Call the fetchData function with the mock server URL
+	result, err := fetchData[Artist](ts.URL)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	// Check the result
+	if result.Name != "Test Artist" {
+		t.Errorf("expected Test Artist, got %s", result.Name)
+	}
+}
+
+// Test fetchData for failure case
+func TestFetchData_FailedRequest(t *testing.T) {
+	// Create a new HTTP server to mock a failed response
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusInternalServerError) // Simulate an error response
+	}))
+	defer ts.Close() // Ensure the server is closed after the test
+
+	// Call the fetchData function with the mock server URL
+	_, err := fetchData[Artist](ts.URL)
+	if err == nil {
+		t.Fatal("expected an error, got none")
+	}
+}
+
