@@ -7,30 +7,6 @@ import (
 	"fmt"
 )
 
-/*func fetchArtist(url string, isSingle bool) interface{} {
-	resp, err := http.Get(url)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer resp.Body.Close()
-
-	if isSingle {
-		var artist Artist
-		err = json.NewDecoder(resp.Body).Decode(&artist)
-		if err != nil {
-			log.Print(err)
-		}
-		return artist
-	} else {
-		var artists []Artist
-		err = json.NewDecoder(resp.Body).Decode(&artists)
-		if err != nil {
-			log.Print(err)
-		}
-		return artists
-	}
-}*/
-
 // Fetches and decodes JSON data from the URL.
 func fetchData[T any](url string) (T,error) {
 	resp, err := http.Get(url)
