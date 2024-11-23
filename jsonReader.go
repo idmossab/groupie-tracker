@@ -27,11 +27,11 @@ func fetchData[T any](url string) (T,error) {
 }
 
 // Fetches complete artist data including locations, dates, and relations.
-func fetchCompleteArtistData(id string) (Artist,bool) {
+func fetchCompleteArtistData(id string) (*Artist,bool) {
 	artist,err := fetchData[Artist](ArtistsURL + "/" + id)
 	// Check for error or if artist is empty
 	if err != nil || artist.Name == "" { 
-		return Artist{},true
+		return new(Artist),true
 	}
 	locations,_ := fetchData[Location](LocationsURL + "/" + id)
 	concertDates,_ := fetchData[Date](DatesURL + "/" + id)
@@ -39,5 +39,5 @@ func fetchCompleteArtistData(id string) (Artist,bool) {
 	artist.Locations = locations
 	artist.ConcertDates = concertDates
 	artist.Relations = relation
-	return artist,false
+	return &artist,false
 }
