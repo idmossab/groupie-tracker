@@ -14,6 +14,7 @@ func fetchData[T any](url string) (T,error) {
 		log.Print(err)
 	}
 	defer resp.Body.Close()
+	//Solution :the response body is unexpectedly empty or prematurely closed
 	if resp.StatusCode != http.StatusOK {
 		return *new(T), fmt.Errorf("error: received status code %d", resp.StatusCode)
 	}
@@ -21,7 +22,6 @@ func fetchData[T any](url string) (T,error) {
 	err = json.NewDecoder(resp.Body).Decode(&result)
 	if err != nil {
 		log.Print(err)
-		return *new(T), err
 	}
 	return result,nil
 }

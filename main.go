@@ -24,7 +24,7 @@ func main() {
 	http.HandleFunc("/", getHandler)
 	http.HandleFunc("/detail", getDetail)
 
-	fmt.Println("Server starting... on https://localhost:8080")
+	fmt.Println("Server starting... on http://localhost:8080")
 	//http.ListenAndServeTLS(":8080", certFile, keyFile, nil)
 	http.ListenAndServe(":8080", nil)
 
